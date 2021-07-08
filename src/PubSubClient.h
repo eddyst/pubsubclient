@@ -83,7 +83,11 @@
 #define MQTT_CALLBACK_SIGNATURE void (*callback)(char*, uint8_t*, unsigned int)
 #endif
 
+#if defined(ESP32)
 #define CHECK_STRING_LENGTH(l,s) if (l+2+strnlen(s, this->bufferSize) > this->bufferSize) {_client->stop();return false;}
+#else
+#define CHECK_STRING_LENGTH(l,s) if (l+2+strlen(s) > MQTT_MAX_PACKET_SIZE) {_client->stop();return false;}
+#endif
 
 class PubSubClient : public Print {
 private:
