@@ -78,10 +78,11 @@
 
 #if defined(ESP8266) || defined(ESP32)
 #include <functional>
-#define MQTT_CALLBACK_SIGNATURE std::function<void(char*, uint8_t*, unsigned int)> callback
+#define MQTT_CALLBACK_SIGNATURE_NAMED(x) std::function<void(char*, uint8_t*, unsigned int)> x
 #else
-#define MQTT_CALLBACK_SIGNATURE void (*callback)(char*, uint8_t*, unsigned int)
+#define MQTT_CALLBACK_SIGNATURE_NAMED(x) void (*x)(char*, uint8_t*, unsigned int)
 #endif
+#define MQTT_CALLBACK_SIGNATURE MQTT_CALLBACK_SIGNATURE_NAMED(callback)
 
 #if defined(ESP32)
 #define CHECK_STRING_LENGTH(l,s) if (l+2+strnlen(s, this->bufferSize) > this->bufferSize) {_client->stop();return false;}
